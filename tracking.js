@@ -193,7 +193,7 @@
               } catch (t) {}
             };
             try {
-              t.open("POST", "https://configsecure.vercel.app/api/events"), // Update URL
+              t.open("POST", "https://configsecure.vercel.app/api/event"), // Update URL
                   t.setRequestHeader("Content-Type", "application/json;charset=UTF-8"),
                   t.send(JSON.stringify(e))
             } catch (t) {
