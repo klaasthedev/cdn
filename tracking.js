@@ -1,18 +1,37 @@
-(function() {
-    var payload = {
-        data: "Test Data"
+(function(window) {
+    // Voeg extra dynamische gegevens toe of voer aanvullende logica uit
+    var additionalData = {
+        timestamp: Date.now(),
+        userAgent: navigator.userAgent,
+        screenResolution: window.screen.width + "x" + window.screen.height
     };
 
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "https://configsecure.vercel.app/api/test", true);
-    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    // Voeg deze gegevens toe aan een globaal object of werk de payload bij
+    if (window.TrackingData) {
+        window.TrackingData = {
+            ...window.TrackingData,
+            ...additionalData
+        };
+    } else {
+        window.TrackingData = additionalData;
+    }
 
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            console.log("Response status:", xhr.status);
-            console.log("Response body:", xhr.responseText);
-        }
-    };
+    // Optioneel: je kunt ook directe acties uitvoeren, zoals nog een verzoek sturen
+    function sendAdditionalData() {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "https://configsecure.vercel.app/api/test", true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
-    xhr.send(JSON.stringify(payload));
-})();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                console.log("Additional data sent:", xhr.status, xhr.responseText);
+            }
+        };
+
+        xhr.send(JSON.stringify(window.TrackingData));
+    }
+
+    // Verzend extra gegevens direct na het laden van het script
+    sendAdditionalData();
+
+})(window);
