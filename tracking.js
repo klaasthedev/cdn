@@ -251,4 +251,3 @@
           p.sendPayloadToServer(o, 5)
     }
   }(window));
-  
